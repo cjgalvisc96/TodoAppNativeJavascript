@@ -7,6 +7,11 @@ const inputNewTodo = document.querySelector(".new-todo");
 const btnDeleteCompleted = document.querySelector(".clear-completed");
 const ulFilters = document.querySelector(".filters");
 const anchorFilters = document.querySelectorAll(".filtro");
+const strongPedings = document.querySelector("#pendings");
+
+const updatePendings = ()=>{
+    strongPedings.innerText = todoList.checkPendings();
+}
 
 export const createTodoHtml = (todo) => {
     const htmlTodo = `
@@ -23,8 +28,10 @@ export const createTodoHtml = (todo) => {
     todoDiv.innerHTML = htmlTodo;
     divTodoList.append(todoDiv.firstElementChild);
 
+    updatePendings();
     return todoDiv.firstElementChild;
 }
+
 
 
 // Events
@@ -35,6 +42,7 @@ inputNewTodo.addEventListener("keyup", (event) => {
         todoList.newTodo(newTodo);
         createTodoHtml(newTodo);
         inputNewTodo.value = "";
+        updatePendings();
     }
 });
 
@@ -50,6 +58,7 @@ divTodoList.addEventListener("click", (event) =>{
         todoList.deleteTodo(todoId);
         divTodoList.removeChild(elementTodo);
     }
+    updatePendings();
 });
 
 btnDeleteCompleted.addEventListener("click", () => {
@@ -60,6 +69,7 @@ btnDeleteCompleted.addEventListener("click", () => {
             divTodoList.removeChild(element);
         }
     }
+    updatePendings();
 });
 
 
@@ -88,5 +98,5 @@ ulFilters.addEventListener("click", (event) => {
                 break;
         }
     }
-
+    updatePendings();
 });

@@ -41,4 +41,9 @@ export class TodoList{
         // this.todoList = this.todoList.map(todo => Todo.fromJson(todo));
         this.todoList = this.todoList.map(Todo.fromJson); // work only for "ONE" element
     }
+
+    checkPendings(){
+        const pendings = this.todoList.filter(todo => !todo.completed);
+        return pendings.length;
+    }
 }
