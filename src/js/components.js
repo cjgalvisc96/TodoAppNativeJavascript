@@ -4,6 +4,9 @@ import {todoList} from "../index";
 // HTML References
 const divTodoList = document.querySelector(".todo-list");
 const inputNewTodo = document.querySelector(".new-todo");
+const btnDeleteCompleted = document.querySelector(".clear-completed");
+const ulFilters = document.querySelector(".filters");
+const anchorFilters = document.querySelectorAll(".filtro");
 
 export const createTodoHtml = (todo) => {
     const htmlTodo = `
@@ -30,7 +33,6 @@ inputNewTodo.addEventListener("keyup", (event) => {
     if (event.keyCode === 13 && inputNewTodo.value.length > 0){
         const newTodo = new Todo(inputNewTodo.value);
         todoList.newTodo(newTodo);
-        console.log(todoList);
         createTodoHtml(newTodo);
         inputNewTodo.value = "";
     }
@@ -48,4 +50,43 @@ divTodoList.addEventListener("click", (event) =>{
         todoList.deleteTodo(todoId);
         divTodoList.removeChild(elementTodo);
     }
+});
+
+btnDeleteCompleted.addEventListener("click", () => {
+    todoList.deleteCompleted();
+    for(let i=divTodoList.children.length -1; i>=0; i--){
+        const element = divTodoList.children[i];
+        if (element.classList.contains('completed')){
+            divTodoList.removeChild(element);
+        }
+    }
+});
+
+
+ulFilters.addEventListener("click", (event) => {
+    const filter  = event.target.text;
+    if (!filter){return;}
+
+    anchorFilters.forEach(elem => elem.classList.remove("selected"));
+    event.target.classList.add("selected");
+
+    for(const element of divTodoList.children){
+        element.classList.remove("hidden");
+        const completed = element.classList.contains("completed");
+
+        switch(filter){
+            case "Pendings":
+                if (completed){
+                    element.classList.add("hidden");
+                }
+                break;
+            
+            case "Completed":
+                if(!completed){
+                    element.classList.add("hidden");
+                }
+                break;
+        }
+    }
+
 });
